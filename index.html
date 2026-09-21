@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>正交连线编辑器 · Canvas/SVG + Web Worker</title>
+  <link rel="stylesheet" href="src/style.css" />
+</head>
+<body>
+  <header class="toolbar">
+    <div class="brand">正交连线编辑器</div>
+    <div class="group">
+      <label class="check"><input type="checkbox" id="snapToggle" checked /> 网格吸附</label>
+      <label class="check"><input type="checkbox" id="guideToggle" checked /> 对齐线</label>
+      <label class="check"><input type="checkbox" id="gridToggle" checked /> 网格</label>
+    </div>
+    <div class="group">
+      <label class="field">网格
+        <select id="gridSize">
+          <option value="10">10</option>
+          <option value="20" selected>20</option>
+          <option value="40">40</option>
+        </select>
+      </label>
+      <label class="field">通道
+        <select id="channel">
+          <option value="10">10</option>
+          <option value="16">16</option>
+          <option value="20" selected>20</option>
+        </select>
+      </label>
+      <button id="addNodeBtn" type="button">+ 节点</button>
+      <button id="perfBtn" type="button">压力测试</button>
+    </div>
+    <div class="group">
+      <button id="rerouteBtn" type="button">重新路由</button>
+      <button id="exportSvgBtn" type="button">导出 SVG</button>
+      <button id="exportPngBtn" type="button">导出 PNG</button>
+      <button id="exportJsonBtn" type="button">导出 JSON</button>
+      <label class="import-btn" for="importJsonInput">导入 JSON
+        <input type="file" id="importJsonInput" accept="application/json,.json" hidden />
+      </label>
+    </div>
+  </header>
+
+  <main id="canvasWrap" class="canvas-wrap">
+    <svg id="scene" xmlns="http://www.w3.org/2000/svg" tabindex="0">
+      <defs>
+        <pattern id="gridPattern" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M 20 0 L 0 0 0 20" fill="none" class="grid-line"/>
+        </pattern>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" class="edge-arrow"/>
+        </marker>
+      </defs>
+      <rect id="gridRect" x="0" y="0" width="100%" height="100%" fill="url(#gridPattern)"/>
+      <g id="edgeLayer"></g>
+      <g id="guideLayer"></g>
+      <g id="tempLayer"></g>
+      <g id="nodeLayer"></g>
+    </svg>
+    <div id="toastHost" class="toast-host" aria-live="polite"></div>
+  </main>
+
+  <footer class="statusbar">
+    <span id="statNodes">节点 0</span>
+    <span id="statEdges">连线 0</span>
+    <span id="statOverlap" class="ok">重叠段 0</span>
+    <span id="statRouteTime">路由 - ms</span>
+    <span id="statFps">FPS -</span>
+    <span class="hint">拖拽节点移动（Shift 临时关闭吸附）· 从端口拖出连线 · Delete 删除选中</span>
+  </footer>
+
+  <script src="src/geometry.js"></script>
+  <script src="src/router-client.js"></script>
+  <script src="src/exporter.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>

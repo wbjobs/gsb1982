@@ -1,0 +1,227 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+  color: #1f2933;
+  background: #f4f6f8;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 8px 12px;
+  background: #ffffff;
+  border-bottom: 1px solid #d9dee3;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  z-index: 2;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 14px;
+  color: #0b6bcb;
+  padding-right: 4px;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 12px;
+  border-right: 1px solid #e4e8ec;
+}
+
+.group:last-child { border-right: none; }
+
+button, .import-btn {
+  appearance: none;
+  border: 1px solid #c4ccd4;
+  background: #fff;
+  color: #1f2933;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+button:hover, .import-btn:hover {
+  border-color: #0b6bcb;
+  color: #0b6bcb;
+}
+
+button:active { background: #eef5fc; }
+
+.check, .field {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.field select {
+  padding: 3px 4px;
+  border: 1px solid #c4ccd4;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.canvas-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+#scene {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #fafbfc;
+  outline: none;
+  user-select: none;
+  touch-action: none;
+}
+
+.grid-line {
+  stroke: #e3e8ed;
+  stroke-width: 1;
+}
+
+.edge-path {
+  fill: none;
+  stroke: #5b6b7b;
+  stroke-width: 1.8;
+  stroke-linejoin: miter;
+}
+
+.edge-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 12;
+  cursor: pointer;
+}
+
+.edge-wrap:hover .edge-path { stroke: #0b6bcb; }
+
+.edge-wrap.selected .edge-path {
+  stroke: #0b6bcb;
+  stroke-width: 2.4;
+}
+
+.edge-wrap.quick .edge-path {
+  stroke-dasharray: 5 4;
+  stroke: #b58a2a;
+}
+
+.edge-arrow { fill: #5b6b7b; }
+.edge-wrap:hover .edge-arrow,
+.edge-wrap.selected .edge-arrow { fill: #0b6bcb; }
+
+.node-rect {
+  fill: #ffffff;
+  stroke: #94a3b2;
+  stroke-width: 1.5;
+  rx: 6;
+  filter: drop-shadow(0 1px 2px rgba(15, 23, 42, 0.12));
+}
+
+.node-group { cursor: grab; }
+.node-group.dragging { cursor: grabbing; }
+.node-group.selected .node-rect {
+  stroke: #0b6bcb;
+  stroke-width: 2;
+}
+
+.node-label {
+  fill: #243447;
+  font-size: 12.5px;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+  user-select: none;
+}
+
+.port {
+  fill: #ffffff;
+  stroke: #0b6bcb;
+  stroke-width: 1.4;
+  cursor: crosshair;
+  transition: r 0.08s ease;
+}
+
+.port:hover { fill: #0b6bcb; r: 5.5; }
+
+.guide {
+  stroke: #ff5a36;
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+  pointer-events: none;
+}
+
+.temp-edge {
+  fill: none;
+  stroke: #0b6bcb;
+  stroke-width: 1.6;
+  stroke-dasharray: 6 4;
+  pointer-events: none;
+}
+
+.toast-host {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.toast {
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: #fff;
+  background: #3a4754;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25);
+  animation: toast-in 0.15s ease;
+  max-width: 60vw;
+}
+
+.toast.error { background: #d64545; }
+.toast.warn  { background: #d08a1d; }
+.toast.info  { background: #0b6bcb; }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.statusbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 6px 12px;
+  background: #ffffff;
+  border-top: 1px solid #d9dee3;
+  font-size: 12px;
+  color: #52606d;
+}
+
+.statusbar .ok { color: #2e8b57; }
+.statusbar .bad { color: #d64545; font-weight: 600; }
+.statusbar .hint { margin-left: auto; color: #82909e; }
